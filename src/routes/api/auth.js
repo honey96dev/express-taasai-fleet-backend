@@ -2,6 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import {sprintf} from "sprintf-js";
 import dateformat from "dateformat";
+import bcrypt from "bcryptjs";
 
 import config, {dbTblName, session} from "core/config";
 import db from "core/db";
@@ -48,10 +49,10 @@ const signInProc = async (req, res, next) => {
   const langs = strings[lang];
   const {email, password} = req.body;
 
-  let sql = sprintf("SELECT `email` FROM `%s` WHERE `email` = ?;", dbTblName.core.users);
+  let sql = sprintf("SELECT * FROM %s WHERE email = $1;", dbTblName.core.users);
   try {
-    let rows = await db.query(sql, [email]);
-    if (rows.length === 0) {
+    let result = await db.query(sql, [email]);
+    if (result.rowCount === 0) {
       res.status(200).send({
         result: langs.error,
         message: langs.emailIsNotRegistered,
@@ -59,21 +60,20 @@ const signInProc = async (req, res, next) => {
       return;
     }
 
-    const hash = myCrypto.hmacHex(password);
-    sql = sprintf("SELECT * FROM `%s` WHERE `email` = ? AND BINARY `hash` = ?;", dbTblName.core.users);
-    rows = await db.query(sql, [email, hash]);
+    const {rows} = result;
+    const user = rows[0];
+    const isMatched = bcrypt.compareSync(password, user.password)
 
-    if (rows.length === 0) {
+    if (!isMatched) {
       res.status(200).send({
         result: langs.error,
         message: langs.passwordIsIncorrect,
       });
       return;
     }
+    tracer.info(user);
 
-    const user = rows[0];
-
-    if (user.deletedDate.length > 0) {
+    if (!!user.deletedDate && user.deletedDate.deleted_at > 0) {
       res.status(200).send({
         result: langs.error,
         message: langs.yourAccountIsClosed,
@@ -81,35 +81,33 @@ const signInProc = async (req, res, next) => {
       return;
     }
 
-    if (user.allowedDate.length === 0) {
-      res.status(200).send({
-        result: langs.error,
-        message: langs.yourAccountIsNotAllowed,
-      });
-      return;
-    }
+    // if (user.allowedDate.length === 0) {
+    //   res.status(200).send({
+    //     result: langs.error,
+    //     message: langs.yourAccountIsNotAllowed,
+    //   });
+    //   return;
+    // }
 
     const token = jwt.sign(
       {
         id: user["id"],
         email: user["email"],
-        firstName: user["firstName"],
-        fatherName: user["fatherName"],
-        lastName: user["lastName"],
+        firstName: user["name"],
       },
       session.secret
     );
 
-    const today = new Date();
-    const date = dateformat(today, "yyyy-mm-dd");
-    const time = dateformat(today, "hh:MM TT");
-    const timestamp = today.getTime();
-    const remoteAddress = req.header["x-forwarded-for"] || req.connection.remoteAddress;
-    const newRows = [
-      [null, user.id, timestamp, date, time, remoteAddress]
-    ];
-    sql = sprintf("INSERT INTO `%s` VALUES ?;", dbTblName.core.signInHistory);
-    await db.query(sql, [newRows]);
+    // const today = new Date();
+    // const date = dateformat(today, "yyyy-mm-dd");
+    // const time = dateformat(today, "hh:MM TT");
+    // const timestamp = today.getTime();
+    // const remoteAddress = req.header["x-forwarded-for"] || req.connection.remoteAddress;
+    // const newRows = [
+    //   [null, user.id, timestamp, date, time, remoteAddress]
+    // ];
+    // sql = sprintf("INSERT INTO %s VALUES S1;", dbTblName.core.signInHistory);
+    // await db.query(sql, [newRows]);
 
     res.status(200).send({
       result: langs.success,
@@ -120,7 +118,7 @@ const signInProc = async (req, res, next) => {
       },
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,

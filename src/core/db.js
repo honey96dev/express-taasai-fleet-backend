@@ -1,13 +1,4 @@
-import dbConn from "core/dbConn";
+import mysql from "./mysql";
+import postgres from "./postgres";
 
-const db = {};
-
-db.query = (q, data) => {
-  return new Promise((resolve, reject) => {
-    dbConn.query(q, data, (err, res) => {
-      err ? reject(err) : resolve(res);
-    });
-  });
-};
-
-export default db;
+export default postgres;
