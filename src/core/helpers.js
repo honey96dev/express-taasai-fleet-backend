@@ -23,22 +23,28 @@ const _makeLimitClause = (page, pageSize) => {
   return "";
 };
 
-const _makeWhereClause = conditions => {
+const _makeWhereClause = (conditions, startIndex) => {
+  startIndex = startIndex || 1;
   let conditionArr = [];
   let values = [];
   !!conditions && Object.keys(conditions).map(key => {
-    conditionArr.push(`\`${key}\` ${conditions[key]["type"]} ?`);
-    values.push(conditions[key]["value"]);
+    if (conditions[key]["type"].startsWith("IS NULL")) {
+      conditionArr.push(`${key} ${conditions[key]["type"]}`);
+    } else {
+      conditionArr.push(`${key} ${conditions[key]["type"]} $${startIndex}`);
+      values.push(conditions[key]["value"]);
+      startIndex++;
+    }
   });
   const clause = conditionArr.length ? "WHERE " + conditionArr.join(" AND ") : "";
-  return [clause, values];
+  return [clause, values, startIndex];
 };
 
 const _makeUpdateClause = updates => {
   let conditionArr = [];
   let values = [];
   !!updates && Object.keys(updates).map(key => {
-    conditionArr.push(`\`${key}\` = ?`);
+    conditionArr.push(`${key} = ?`);
     values.push(updates[key]);
   });
   const clause = conditionArr.length ? "SET " + conditionArr.join(", ") : "";
@@ -52,7 +58,7 @@ const _makeOnDuplicateUpdateClause = values => {
 const _makeOrderClause = orders => {
   let orderArr = [];
   !!orders && Object.keys(orders).map(key => {
-    orderArr.push(`\`${key}\` ${orders[key]}`);
+    orderArr.push(`${key} ${orders[key]}`);
   });
   const orderClause = orderArr.length ? "ORDER BY " + orderArr.join(", ") : "";
   return orderClause;
@@ -106,12 +112,17 @@ export default {
     const limitClause = _makeLimitClause(page, pageSize);
     const [start, limit] = _calculateStartPosition(page, pageSize);
 
-    let sql = sprintf("SELECT * FROM `%s` %s %s %s;", table, whereClause, orderClause, limitClause);
-
+    let sql = sprintf("SELECT * FROM %s %s %s %s;", table, whereClause, orderClause, limitClause);
     try {
-      let rows = await db.query(sql, values);
-      sql = sprintf("SELECT COUNT(*) `count` FROM `%s` %s;", table, whereClause);
+      let result = await db.query(sql, values);
+      const {rows} = result;
+      let number = start;
+      for (let row of rows) {
+        row["number"] = number++;
+      }
+      sql = sprintf("SELECT COUNT(*) count FROM %s %s;", table, whereClause);
       let count = await db.query(sql, values);
+      count = count.rows;
       let pageCount = 0;
       count.length > 0 && (pageCount = Math.ceil(count[0]['count'] / limit));
 

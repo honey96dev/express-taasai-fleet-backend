@@ -49,7 +49,7 @@ const signInProc = async (req, res, next) => {
   const langs = strings[lang];
   const {email, password} = req.body;
 
-  let sql = sprintf("SELECT * FROM %s WHERE email = $1;", dbTblName.core.users);
+  let sql = sprintf("SELECT * FROM %s WHERE email = $1;", dbTblName.users);
   try {
     let result = await db.query(sql, [email]);
     if (result.rowCount === 0) {

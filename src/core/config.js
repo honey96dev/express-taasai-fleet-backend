@@ -37,11 +37,8 @@ const session = {
   secret: "fleet.taasai.com@@",
 };
 const dbTblName = {
-  core: {
-    users: "fleets",
-    avatars: "core_avatars",
-    signInHistory: "core_sign_in_history",
-  },
+  users: "fleets",
+  drivers: "drivers",
 
   resetPasswordTokens: "reset_password_tokens",
 };
