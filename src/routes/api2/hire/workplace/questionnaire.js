@@ -32,7 +32,7 @@ const _listQuestionnaires = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -66,7 +66,7 @@ const _listQuestions = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -98,7 +98,7 @@ const saveProc = async (req, res, next) => {
       data: rows,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -134,7 +134,7 @@ const getProc = async (req, res, next) => {
       });
     }
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -161,7 +161,7 @@ const deleteProc = async (req, res, next) => {
 
     await _listQuestionnaires(req, res, next);
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -193,7 +193,7 @@ const saveQuestionProc = async (req, res, next) => {
       data: rows,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -229,7 +229,7 @@ const getQuestionProc = async (req, res, next) => {
       });
     }
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -256,7 +256,7 @@ const deleteQuestionProc = async (req, res, next) => {
 
     await _listQuestions(req, res, next);
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,

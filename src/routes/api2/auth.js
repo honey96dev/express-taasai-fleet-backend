@@ -191,7 +191,7 @@ const signInProc = async (req, res, next) => {
       },
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -233,7 +233,7 @@ const signUpProc = async (req, res, next) => {
       message: langs.successfullyRegistered,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -281,7 +281,7 @@ const validateGoogleAccountProc = async (req, res, next) => {
       data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -384,7 +384,7 @@ const signInWithGoogleProc = async (req, res, next) => {
       },
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -432,7 +432,7 @@ const validateFacebookAccountProc = async (req, res, next) => {
       data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -534,7 +534,7 @@ const signInWithFacebookProc = async (req, res, next) => {
       },
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -586,7 +586,7 @@ const sendForgotPasswordMailProc = async (req, res, next) => {
       message: langs.resetEmailIsSent,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -628,7 +628,7 @@ const validateTokenProc = async (req, res, next) => {
         break;
     }
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -677,7 +677,7 @@ const resetPasswordProc = async (req, res, next) => {
       message: langs.successfullyChanged,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,

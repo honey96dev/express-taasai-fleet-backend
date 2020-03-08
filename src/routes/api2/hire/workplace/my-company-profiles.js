@@ -39,7 +39,7 @@ const loadSalaryProc = async (req, res, next) => {
       });
     }
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -66,7 +66,7 @@ const saveSalaryProc = async (req, res, next) => {
       data: rows,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -104,7 +104,7 @@ const loadAboutProc = async (req, res, next) => {
       });
     }
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -131,7 +131,7 @@ const saveAboutProc = async (req, res, next) => {
       data: rows,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -169,7 +169,7 @@ const loadVisionProc = async (req, res, next) => {
       });
     }
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -196,7 +196,7 @@ const saveVisionProc = async (req, res, next) => {
       data: rows,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -234,7 +234,7 @@ const loadMissionProc = async (req, res, next) => {
       });
     }
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -261,7 +261,7 @@ const saveMissionProc = async (req, res, next) => {
       data: rows,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -297,7 +297,7 @@ const loadCoverPhotoProc = async (req, res, next) => {
       });
     }
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -347,7 +347,7 @@ const saveCoverPhotoProc = async (req, res, next) => {
       data: {rows, coverPhoto},
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,

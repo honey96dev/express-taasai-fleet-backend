@@ -1,0 +1,32 @@
+{
+  "files": {
+    "static/js/0.chunk.js": "/static/js/0.chunk.js",
+    "main.css": "/static/css/main.chunk.css",
+    "main.js": "/static/js/main.chunk.js",
+    "runtime~main.js": "/static/js/runtime~main.js",
+    "static/css/3.chunk.css": "/static/css/3.chunk.css",
+    "static/js/3.chunk.js": "/static/js/3.chunk.js",
+    "static/css/4.chunk.css": "/static/css/4.chunk.css",
+    "static/js/4.chunk.js": "/static/js/4.chunk.js",
+    "static/css/5.chunk.css": "/static/css/5.chunk.css",
+    "static/js/5.chunk.js": "/static/js/5.chunk.js",
+    "static/css/6.chunk.css": "/static/css/6.chunk.css",
+    "static/js/6.chunk.js": "/static/js/6.chunk.js",
+    "static/css/7.chunk.css": "/static/css/7.chunk.css",
+    "static/js/7.chunk.js": "/static/js/7.chunk.js",
+    "static/css/8.chunk.css": "/static/css/8.chunk.css",
+    "static/js/8.chunk.js": "/static/js/8.chunk.js",
+    "index.html": "/index.html",
+    "precache-manifest.js?2bd0d4e0ae99a138a7c381d3131bc39f": "/precache-manifest.js?2bd0d4e0ae99a138a7c381d3131bc39f",
+    "service-worker.js": "/service-worker.js",
+    "static/media/index.scss": "/static/media/circle-chain.png",
+    "static/media/mdb-pro.scss": "/static/media/default-skin.svg",
+    "static/media/auth.png": "/static/media/auth.png",
+    "static/media/all.min.css": "/static/media/fa-solid-900.woff2",
+    "static/media/front.png": "/static/media/front.png",
+    "static/media/logo-100.png": "/static/media/logo-100.png",
+    "static/media/logo-150.png": "/static/media/logo-150.png",
+    "static/media/logo-200.png": "/static/media/logo-200.png",
+    "static/media/logo-no-title-300.png": "/static/media/logo-no-title-300.png"
+  }
+}

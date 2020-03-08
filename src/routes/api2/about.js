@@ -32,7 +32,7 @@ const loadAboutUs = async (req, res, next) => {
       data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,

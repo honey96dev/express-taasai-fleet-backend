@@ -27,7 +27,7 @@ const getJobRolesProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -56,7 +56,7 @@ const getJobSubrolesProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -84,7 +84,7 @@ const getSectorsProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -113,7 +113,7 @@ const getIndustriesProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -141,7 +141,7 @@ const getCountriesProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -170,7 +170,7 @@ const getCitiesProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -198,7 +198,7 @@ const getEmploymentTypesProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -229,7 +229,7 @@ const getSalaryRangesProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -260,7 +260,7 @@ const getCareerLevelsProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -291,7 +291,7 @@ const getMajorsProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -322,7 +322,7 @@ const getDegreesProc = async (req, res, next) => {
       ...data,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,

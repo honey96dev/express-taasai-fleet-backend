@@ -83,7 +83,7 @@ const saveAvatarProc = async (req, res, next) => {
           data: rows,
         });
       } catch (err) {
-        tracer.error(JSON.stringify(err));
+        tracer.error(err);
         tracer.error(__filename);
         res.status(200).send({
           result: langs.error,
@@ -93,7 +93,7 @@ const saveAvatarProc = async (req, res, next) => {
       }
     });
     file.on("error", err => {
-      tracer.error(JSON.stringify(err));
+      tracer.error(err);
       tracer.error(__filename);
       res.status(200).send({
         result: langs.error,
@@ -138,7 +138,7 @@ const saveProc = async (req, res, next) => {
       },
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
@@ -173,7 +173,7 @@ const changePasswordProc = async (req, res, next) => {
       message: langs.passwordIsSuccessfullyChanged,
     });
   } catch (err) {
-    tracer.error(JSON.stringify(err));
+    tracer.error(err);
     tracer.error(__filename);
     res.status(200).send({
       result: langs.error,
