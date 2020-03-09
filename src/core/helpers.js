@@ -65,6 +65,16 @@ const _makeOrderClause = orders => {
 };
 
 export default {
+  handleErrorResponse: (res, err, langs) => {
+    tracer.error(err);
+    tracer.error(__filename);
+    res.status(200).send({
+      result: langs.error,
+      message: langs.unknownServerError,
+      err,
+    });
+  },
+
   sleep: async (ms) => {
     return new Promise((resolve, reject) => {
       const handle = setTimeout(() => {
@@ -172,7 +182,7 @@ export default {
     const now = new Date();
     const today = dateformat(now, "yyyy-mm-dd");
 
-    let sql = sprintf("UPDATE `%s` SET `deletedDate` = ? %s %s LIMIT 1;", table, whereClause, orderClause);
+    let sql = sprintf("UPDATE %s SET deletedDate = $1 %s %s;", table, whereClause, orderClause);
     // let sql = sprintf("DELETE FROM `%s` %s %s LIMIT 1;", table, whereClause, orderClause);
 
     try {

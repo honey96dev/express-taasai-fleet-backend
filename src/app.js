@@ -8,6 +8,7 @@ import cors from "cors";
 import helmet from "helmet";
 import Ddos from "ddos";
 
+import {server} from "core/config";
 import apiRouter from "./routes/api";
 
 const app = express();
@@ -16,6 +17,7 @@ const ddos = new Ddos({
   maxcount: process.env.DDOS_MAXCOUNT,
   burst: process.env.DDOS_BURST,
   limit: process.env.DDOS_LIMIT,
+  trustProxy: !process.env.DDOS_TRUST_PROXY || process.env.DDOS_TRUST_PROXY === "true",
 });
 const options = {
   uploadDir: os.tmpdir(),
@@ -39,9 +41,10 @@ app.use(formData.union());
 process.env.NODE_ENV !== "production" && app.use(cors());
 app.use(helmet());
 
-app.use("/assets", express.static(path.join(cwd, "public")));
+// app.use("/assets", express.static(path.join(cwd, "public")));
+app.use("/assets", express.static(path.join(server.assetsDir, "public")));
 
-app.use("/api", apiRouter);
+app.use("/api", ddos.express, apiRouter);
 
 app.use(express.static(path.join(cwd, "frontend")));
 app.get("*", (req, res) => {

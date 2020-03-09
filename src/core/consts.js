@@ -1,6 +1,7 @@
 export const uploadPath = {
   avatars: "uploads/avatars",
-  aboutUs: "uploads/about-us",
+  vehicle: "public/vehicle",
+  driver: "public/driver",
 };
 export const success = "success";
 export const error = "error";

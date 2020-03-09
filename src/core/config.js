@@ -13,6 +13,7 @@ const server = {
   sslCert: "./sslcert/1e720c418ffe9875.crt",
   sslCA: "./sslcert/gd_bundle-g2-g1.crt",
   environment: process.env.NODE_ENV,
+  assetsDir: process.env.ASSETS_DIR,
 };
 const mysql = {
   connectionLimit: 10,
@@ -38,7 +39,9 @@ const session = {
 };
 const dbTblName = {
   users: "fleets",
+  operators: "operators",
   drivers: "drivers",
+  vehicleTypes: "vehicle_types",
 
   resetPasswordTokens: "reset_password_tokens",
 };
