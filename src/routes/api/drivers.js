@@ -58,12 +58,12 @@ const listProc = async (req, res, next) => {
 const getProc = async (req, res, nect) => {
   const lang = req.get(consts.lang) || consts.defaultLanguage;
   const langs = strings[lang];
-  let {id} = req.body;
+  let {id, userId} = req.body;
 
   try {
-    let sql = sprintf("SELECT D.*, O.name AS operator FROM %s D INNER JOIN operators O ON O.id = D.operator_id WHERE D.id = $1;", dbTblName.drivers);
-    tracer.info(sql);
-    const {rows, rowCount} = await db.query(sql, [id]);
+    let sql = sprintf("SELECT D.*, V.name vehicle_type, O.name AS operator FROM %s D INNER JOIN operators O ON O.id = D.operator_id INNER JOIN vehicle_types V ON V.id = D.vehicle_type_id WHERE D.id = $1 AND D.fleet_id = $2;", dbTblName.drivers);
+
+    const {rows, rowCount} = await db.query(sql, [id, userId]);
 
     if (rowCount > 0) {
       res.status(200).send({

@@ -20,7 +20,7 @@ const listProc = async (req, res, next) => {
   pageSize || (pageSize = consts.defaultPageSize);
   const start = pageSize * (page - 1);
 
-  let sql = sprintf("SELECT R.*, P.name passenger, D.fleet FROM rides R INNER JOIN passengers P ON P.id = R.passenger_id INNER JOIN fare_divisions D ON D.id = R.id WHERE R.fleet_id = $1 AND R.payment_verified = $2 ORDER BY R.created_at DESC OFFSET $3 LIMIT $4;", dbTblName.rides);
+  let sql = sprintf("SELECT R.*, P.name passenger, D.operator operator_commission, D.fleet fleet_commission FROM rides R INNER JOIN passengers P ON P.id = R.passenger_id INNER JOIN fare_divisions D ON D.id = R.id WHERE R.fleet_id = $1 AND R.payment_verified = $2 ORDER BY R.created_at DESC OFFSET $3 LIMIT $4;", dbTblName.rides);
   try {
     let {rows} = await db.query(sql, [userId, 1, start, pageSize]);
     let number = start;
