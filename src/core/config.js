@@ -42,6 +42,7 @@ const dbTblName = {
   operators: "operators",
   drivers: "drivers",
   vehicleTypes: "vehicle_types",
+  rides: "rides",
 
   resetPasswordTokens: "reset_password_tokens",
 };

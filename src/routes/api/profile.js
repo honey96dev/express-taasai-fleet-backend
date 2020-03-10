@@ -6,6 +6,8 @@ import path from "path";
 import uuid from "uuid";
 import fs from "fs";
 import mkdirp from "mkdirp";
+import bcrypt from "bcryptjs";
+
 import {dbTblName, session} from "core/config";
 import db from "core/db";
 import strings from "core/strings";
@@ -153,20 +155,27 @@ const changePasswordProc = async (req, res, next) => {
   const langs = strings[lang];
   let {id, password0, password} = req.body;
 
-  const hash0 = myCrypto.hmacHex(password0 || "");
-  const hash = myCrypto.hmacHex(password || "");
-
-  let sql = sprintf("SELECT * FROM `%s` WHERE `id` = ? AND `hash` = ?;", dbTblName.users);
+  let sql = sprintf("SELECT * FROM %s WHERE id = $1;", dbTblName.users);
   try {
-    let rows = await db.query(sql, [id, hash0]);
-    if (rows.length === 0) {
+    let {rows, rowCount} = await db.query(sql, [id]);
+    if (rowCount == 0) {
       res.status(200).send({
         result: langs.error,
         message: langs.currentPasswordIncorrect,
       });
       return;
     }
-    sql = sprintf("UPDATE `%s` SET `hash` = ? WHERE `id` = ?;", dbTblName.users);
+    if (!bcrypt.compareSync(password0, rows[0].password)) {
+      res.status(200).send({
+        result: langs.error,
+        message: langs.currentPasswordIncorrect,
+      });
+      return;
+    }
+    
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    sql = sprintf("UPDATE %s SET password = $1 WHERE id = $2;", dbTblName.users);
     await db.query(sql, [hash, id]);
     res.status(200).send({
       result: langs.success,

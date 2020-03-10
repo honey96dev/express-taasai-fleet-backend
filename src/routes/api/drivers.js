@@ -20,7 +20,7 @@ const _listItems = async (req, res, next) => {
   pageSize || (pageSize = consts.defaultPageSize);
   const start = pageSize * (page - 1);
 
-  let sql = sprintf("SELECT D.*, P.income_pending FROM %s D LEFT JOIN pendings_driver P ON P.id = D.id WHERE D.fleet_id = $1 AND D.deleted_at IS NULL ORDER BY created_at OFFSET $2 LIMIT $3;", dbTblName.drivers);
+  let sql = sprintf("SELECT D.*, P.income_pending FROM %s D LEFT JOIN pendings_driver P ON P.id = D.id WHERE D.fleet_id = $1 AND D.deleted_at IS NULL ORDER BY created_at DESC OFFSET $2 LIMIT $3;", dbTblName.drivers);
   try {
     let result = await db.query(sql, [userId, start, pageSize]);
     const {rows} = result;

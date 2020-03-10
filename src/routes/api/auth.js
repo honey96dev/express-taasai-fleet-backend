@@ -49,7 +49,7 @@ const signInProc = async (req, res, next) => {
   const langs = strings[lang];
   const {email, password} = req.body;
 
-  let sql = sprintf("SELECT U.*, O.name operator_name FROM %s U INNER JOIN operators O ON O.id = U.operator_id WHERE U.email = $1;", dbTblName.users);
+  let sql = sprintf("SELECT U.*, O.name operator_name, P.income_pending, (SELECT COUNT(*) drivers FROM drivers D WHERE D.fleet_id = U.id) FROM %s U INNER JOIN operators O ON O.id = U.operator_id LEFT JOIN pendings_operator P ON P.id = U.id WHERE U.email = $1;", dbTblName.users);
   try {
     let result = await db.query(sql, [email]);
     if (result.rowCount === 0) {
