@@ -168,11 +168,30 @@ const deleteProc = async (req, res, next) => {
   }
 }
 
+const activateProc = async (req, res, next) => {
+  const lang = req.get(consts.lang) || consts.defaultLanguage;
+  const langs = strings[lang];
+  let {data: {id, is_active}} = req.body;
+
+  const today = new Date();
+  const timestamp = dateformat(today, "yyyy-mm-dd HH:MM:ss.l'000+00'", true);
+
+  try {
+    let sql = sprintf("UPDATE %s SET is_active = $1 WHERE id = $2;", dbTblName.drivers);
+    await db.query(sql, [is_active, id]);
+    
+    await _listItems(req, res, next);
+  } catch (err) {
+    helpers.handleErrorResponse(res, err, langs);
+  }
+}
+
 const router = express.Router();
 
 router.post("/list", listProc);
 router.post("/get", getProc);
 router.post("/add", addProc);
 router.post("/delete", deleteProc);
+router.post("/activate", activateProc);
 
 export default router;
