@@ -229,5 +229,6 @@ router.post("/avatar", avatarProc);
 router.post("/save-avatar", saveAvatarProc);
 router.post("/save", saveProc);
 router.post("/change-password", changePasswordProc);
+router.post("/get-balances", getBalancesProc);
 
 export default router;
