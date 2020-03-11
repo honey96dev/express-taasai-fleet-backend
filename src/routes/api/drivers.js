@@ -202,7 +202,7 @@ const historyProc = async (req, res, next) => {
     for (let row of rows) {
       row["number"] = ++number;
     }
-    sql = sprintf("SELECT COUNT(R.*) FROM rides R INNER JOIN passengers P ON P.id = R.passenger_id INNER JOIN fare_divisions D ON D.id = R.id WHERE R.driver_id = $1;", dbTblName.rides);
+    sql = sprintf("SELECT COUNT(R.*) count FROM rides R INNER JOIN passengers P ON P.id = R.passenger_id INNER JOIN fare_divisions D ON D.id = R.id WHERE R.driver_id = $1;", dbTblName.rides);
     let count = await db.query(sql, [id]);
     count = count.rows;
     let pageCount = 0;
