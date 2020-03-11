@@ -186,6 +186,45 @@ const activateProc = async (req, res, next) => {
   }
 }
 
+const historyProc = async (req, res, next) => {
+  const lang = req.get(consts.lang) || consts.defaultLanguage;
+  const langs = strings[lang];
+  let {userId, id, page, pageSize} = req.body;
+
+  page || (page = 1);
+  pageSize || (pageSize = consts.defaultPageSize);
+  const start = pageSize * (page - 1);
+
+  let sql = sprintf("SELECT R.*, P.name passenger, D.operator operator_commission, D.fleet fleet_commission FROM rides R INNER JOIN passengers P ON P.id = R.passenger_id LEFT JOIN fare_divisions D ON D.id = R.id WHERE R.driver_id = $1 ORDER BY R.created_at DESC OFFSET $2 LIMIT $3;", dbTblName.rides);
+  try {
+    let {rows} = await db.query(sql, [id, start, pageSize]);
+    let number = start;
+    for (let row of rows) {
+      row["number"] = ++number;
+    }
+    sql = sprintf("SELECT COUNT(R.*) FROM rides R INNER JOIN passengers P ON P.id = R.passenger_id INNER JOIN fare_divisions D ON D.id = R.id WHERE R.driver_id = $1;", dbTblName.rides);
+    let count = await db.query(sql, [id]);
+    count = count.rows;
+    let pageCount = 0;
+    count.length > 0 && (pageCount = Math.ceil(count[0]['count'] / pageSize));
+
+    res.status(200).send({
+      result: langs.success,
+      count: count[0]['count'],
+      pageCount,
+      data: rows,
+    });
+  } catch (err) {
+    tracer.error(err);
+    tracer.error(__filename);
+    res.status(200).send({
+      result: langs.error,
+      message: langs.unknownServerError,
+      err,
+    });
+  }
+};
+
 const router = express.Router();
 
 router.post("/list", listProc);
@@ -193,5 +232,6 @@ router.post("/get", getProc);
 router.post("/add", addProc);
 router.post("/delete", deleteProc);
 router.post("/activate", activateProc);
+router.post("/history", historyProc);
 
 export default router;
