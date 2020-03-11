@@ -192,6 +192,37 @@ const changePasswordProc = async (req, res, next) => {
   }
 };
 
+const getStatsProc = async (req, res, next) => {
+  const lang = req.get(consts.lang) || consts.defaultLanguage;
+  const langs = strings[lang];
+  const {id} = req.body;
+
+  let sql = sprintf("SELECT SUM(D.fleet) total_earning, (SELECT COUNT(*) FROM %s WHERE fleet_id = $1) rides_count, (SELECT COUNT(*) FROM %s WHERE fleet_id = $2) drivers_count FROM %s D INNER JOIN rides R ON R.id = D.id AND R.fleet_id = $3;", dbTblName.rides, dbTblName.drivers, dbTblName.fareDivisions);
+  try {
+    let {rows, rowCount} = await db.query(sql, [id, id, id]);
+    if (rowCount === 0) {
+      res.status(200).send({
+        result: langs.error,
+        message: langs.notFound,
+      });
+      return;
+    }
+
+    res.status(200).send({
+      result: langs.success,
+      data: rows[0],
+    });
+  } catch (err) {
+    tracer.error(err);
+    tracer.error(__filename);
+    res.status(200).send({
+      result: langs.error,
+      message: langs.unknownServerError,
+      err,
+    });
+  }
+};
+
 const getBalancesProc = async (req, res, next) => {
   const lang = req.get(consts.lang) || consts.defaultLanguage;
   const langs = strings[lang];
@@ -229,6 +260,7 @@ router.post("/avatar", avatarProc);
 router.post("/save-avatar", saveAvatarProc);
 router.post("/save", saveProc);
 router.post("/change-password", changePasswordProc);
+router.post("/get-stats", getStatsProc);
 router.post("/get-balances", getBalancesProc);
 
 export default router;
