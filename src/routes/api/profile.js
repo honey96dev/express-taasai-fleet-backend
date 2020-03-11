@@ -192,6 +192,37 @@ const changePasswordProc = async (req, res, next) => {
   }
 };
 
+const getBalancesProc = async (req, res, next) => {
+  const lang = req.get(consts.lang) || consts.defaultLanguage;
+  const langs = strings[lang];
+  const {id} = req.body;
+
+  let sql = sprintf("SELECT U.balance, P.income_pending FROM %s U LEFT JOIN pendings_operator P ON P.id = U.id WHERE U.id = $1;", dbTblName.users);
+  try {
+    let {rows, rowCount} = await db.query(sql, [id]);
+    if (rowCount === 0) {
+      res.status(200).send({
+        result: langs.error,
+        message: langs.notFound,
+      });
+      return;
+    }
+
+    res.status(200).send({
+      result: langs.success,
+      data: rows[0],
+    });
+  } catch (err) {
+    tracer.error(err);
+    tracer.error(__filename);
+    res.status(200).send({
+      result: langs.error,
+      message: langs.unknownServerError,
+      err,
+    });
+  }
+};
+
 const router = express.Router();
 
 router.post("/avatar", avatarProc);
